@@ -7,7 +7,8 @@ services:
             - --api.insecure=true
             - --providers.docker
             - --providers.docker.exposedbydefault=false
-            - --entrypoints.web.address=:80
+            - --entrypoints.http.address=:80
+            - --entrypoints.https.address=:443
             - --global.checkNewVersion=true
             - --global.sendAnonymousUsage=false
         ports:
@@ -15,3 +16,20 @@ services:
             - "8080:8080"
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock:ro
+
+    nginx:
+        build: ./nginx
+        container_name: "nginx"
+        links:
+            - php
+        volumes:
+            - ./logs/nginx:/var/log/nginx:cached
+            - ./logs/api:/var/www/app/var/log:cached
+            - ./app/:/var/www/otrak/:cached
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.nginx.rule=Host(`docker.dev.localhost`)"
+            - "traefik.nginx.port=80"
+            - "traefik.nginx.port=443"
+            - "traefik.http.routers.nginx.entrypoints=http"
+            - "traefik.http.routers.nginx.entrypoints=https"
