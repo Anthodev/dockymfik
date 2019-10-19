@@ -15,6 +15,7 @@ services:
       - --global.sendAnonymousUsage=false
     ports:
       - "80:80"
+      - "443:443"
       - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -43,8 +44,8 @@ services:
       - 9001
     links:
       - db
-    # volumes:
-      # - ./../app:/var/www/app:cached
+    volumes:
+      - ./app:/var/www/app:cached
     labels:
       - "traefik.enable=true"
       - "traefik.php.port=9001"
