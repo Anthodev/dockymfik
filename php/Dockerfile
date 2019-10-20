@@ -42,8 +42,8 @@ RUN echo "$(curl -sS https://composer.github.io/installer.sig) -" > composer-set
 
 RUN usermod -u 1000 www-data
 
-COPY symfony.ini /etc/php7.3/conf.d/
-COPY symfony.ini /etc/php7.3/cli/conf.d/
+# COPY symfony.ini /etc/php7.3/conf.d/
+# COPY symfony.ini /etc/php7.3/cli/conf.d/
 COPY xdebug.ini  /etc/php7.3/conf.d/
 
 # COPY symfony.pool.conf /etc/php7/php-fpm.d/
