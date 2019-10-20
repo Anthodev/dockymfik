@@ -9,6 +9,8 @@ services:
       - --api.insecure=true
       - --providers.docker
       - --providers.docker.exposedbydefault=false
+      - --providers.file=true
+      - --providers.file.filname=/dynamic.toml
       - --entrypoints.http.address=:80
       - --entrypoints.https.address=:443
       - --global.checkNewVersion=true
@@ -19,6 +21,8 @@ services:
       - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./certs:/certs:cached
+      - ./dynamic.toml:/dynamic.toml:cached
 
   nginx:
     build: ./nginx
@@ -36,6 +40,7 @@ services:
       - "traefik.nginx.port=443"
       - "traefik.http.routers.nginx.entrypoints=http"
       - "traefik.http.routers.nginx.entrypoints=https"
+      - "traefik.http.routers.https.tls=true"
 
   php:
     build: ./php
