@@ -12,6 +12,7 @@ RUN buildDeps=" \
     runtimeDeps=" \
     curl \
     git \
+    unzip \
     libfreetype6-dev \
     libicu-dev \
     libjpeg-dev \
@@ -54,5 +55,7 @@ RUN echo 'alias sf="php bin/console"' >> ~/.bashrc
 # CMD ["php-fpm7", "-F"]
 
 WORKDIR /var/www/app/
+
+RUN chown -R 1000:1001 /var/www/app/
 
 EXPOSE 9000
