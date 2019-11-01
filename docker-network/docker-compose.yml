@@ -4,14 +4,14 @@ services:
     image: "traefik:v2.0.1"
     container_name: "traefik"
     networks:
-      - docker-web
+      - dockymfik-network
     env_file:
       - ./../.env
     command:
       - --entrypoints.web.address=:80
       - --entrypoints.websecure.address=:443
       - --providers.docker
-      - --providers.docker.network=docker-web
+      - --providers.docker.network=dockymfik-network
       - --api.insecure=true
 
       - --certificatesresolvers.leresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
@@ -41,5 +41,5 @@ services:
       - "./acme.json:/acme.json:cached"
 
 networks:
-  docker-web:
+  dockymfik-network:
     external: true

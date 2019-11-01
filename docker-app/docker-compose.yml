@@ -6,14 +6,14 @@ services:
     build: ./php
     container_name: "php-app"
     networks:
-      - docker-web
+      - dockymfik-network
     depends_on:
       - db-app
     volumes:
       - ./app:/var/www/app:cached
     labels:
       - "traefik.enable=true"
-      - "traefik.docker.network=docker-web"
+      - "traefik.docker.network=dockymfik-network"
 
       - "traefik.http.routers.php-app.rule=Host(`docker.app.localhost`)"
       - "traefik.http.routers.php-app.entrypoints=websecure"
@@ -24,7 +24,7 @@ services:
     image: mysql:5.7
     container_name: "db-app"
     networks:
-      - docker-web
+      - dockymfik-network
     env_file:
       - ./../.env
     command: ["--default-authentication-plugin=mysql_native_password"]
@@ -36,5 +36,5 @@ services:
       - "traefik.enable=true"
 
 networks:
-  docker-web:
+  dockymfik-network:
       external: true
