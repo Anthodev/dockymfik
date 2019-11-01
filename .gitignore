@@ -1,2 +1,2 @@
-/docker-app/app/*
-!/docker-app/app/.keep
+docker-app/app/*
+!docker-app/app/.keep

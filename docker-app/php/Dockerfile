@@ -56,6 +56,6 @@ RUN echo 'alias sf="php bin/console"' >> ~/.bashrc
 
 WORKDIR /var/www/app/
 
-RUN chown -R 1000:1001 /var/www/app/
+RUN chown -R www-data:www-data /var/www/app/
 
 EXPOSE 9000
