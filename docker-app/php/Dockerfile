@@ -1,7 +1,7 @@
 # FROM alpine:3.8
 FROM php:7.3.10-apache
 
-LABEL maintainer="Cedric Anthony <cedric@antho.dev>"
+LABEL maintainer="Cedric Anthony <dev@antho.dev>"
 
 RUN buildDeps=" \
     default-libmysqlclient-dev \
@@ -56,6 +56,6 @@ RUN echo 'alias sf="php bin/console"' >> ~/.bashrc
 
 WORKDIR /var/www/app/
 
-RUN chown -R 1000:1001 /var/www/app/
+RUN chown -R www-data:www-data /var/www/app/
 
 EXPOSE 9000

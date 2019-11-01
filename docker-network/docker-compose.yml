@@ -4,16 +4,18 @@ services:
     image: "traefik:v2.0.1"
     container_name: "traefik"
     networks:
-      - docker-web
+      - dockymfik-network
+    env_file:
+      - ./../.env
     command:
       - --entrypoints.web.address=:80
       - --entrypoints.websecure.address=:443
       - --providers.docker
-      - --providers.docker.network=docker-web
+      - --providers.docker.network=dockymfik-network
       - --api.insecure=true
 
       - --certificatesresolvers.leresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
-      - --certificatesresolvers.leresolver.acme.email=dev@antho.dev
+      - --certificatesresolvers.leresolver.acme.email=${LETSENCRYPT_EMAIL}
       - --certificatesresolvers.leresolver.acme.storage=/acme.json
       - --certificatesresolvers.leresolver.acme.tlschallenge=true
       
@@ -36,8 +38,8 @@ services:
       - "8080:8080"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "./acme.json:/acme.json"
+      - "./acme.json:/acme.json:cached"
 
 networks:
-  docker-web:
+  dockymfik-network:
     external: true
