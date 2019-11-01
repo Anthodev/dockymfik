@@ -1,2 +1,6 @@
+.env
+.env.*
+!.env.dist
+
 docker-app/app/*
 !docker-app/app/.keep
