@@ -19,6 +19,7 @@ services:
       - "traefik.http.routers.php-app.entrypoints=websecure"
       - "traefik.http.routers.php-app.tls=true"
       - "traefik.http.routers.php-app.tls.certresolver=leresolver"
+    restart: unless-stopped
 
   db-app:
     image: mysql:5.7
@@ -34,6 +35,7 @@ services:
       MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
     labels:
       - "traefik.enable=true"
+    restart: unless-stopped
 
 networks:
   dockymfik-network:
