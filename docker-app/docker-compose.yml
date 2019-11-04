@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+
+  php-app:
+    build: ./php
+    container_name: "php-app"
+    networks:
+      - dockymfik-network
+    depends_on:
+      - db-app
+    volumes:
+      - ./app:/var/www/app:cached
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=dockymfik-network"
+
+      - "traefik.http.routers.php-app.rule=Host(`docker.app.localhost`)"
+      - "traefik.http.routers.php-app.entrypoints=websecure"
+      - "traefik.http.routers.php-app.tls=true"
+      - "traefik.http.routers.php-app.tls.certresolver=leresolver"
+    restart: unless-stopped
+
+  db-app:
+    image: mysql:5.7
+    container_name: "db-app"
+    networks:
+      - dockymfik-network
+    env_file:
+      - ./../.env
+    command: ["--default-authentication-plugin=mysql_native_password"]
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+    labels:
+      - "traefik.enable=true"
+    restart: unless-stopped
+
+networks:
+  dockymfik-network:
+      external: true
