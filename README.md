@@ -1,8 +1,9 @@
 # dockymfik
-A complete Symfony-ready development stack using Docker, PHP (with redis support), Let's Encrypt and Traefik v2
+A complete Symfony-ready development stack using Docker, PHP (with redis support and composer), Node (and Yarn), Let's Encrypt (SSL) and Traefik v2
 
 ## Requirements
 - Docker
+- docker-compose
 
 ## Installation
 You must install docker first to be able to use this stack. To install it, please refer to this page: https://docs.docker.com/install/
@@ -23,7 +24,7 @@ It'll create the docker-network and build the containers.
 
 ## Usage
 
-To start the containers, run the following command:
+To start the containers, run the following command (in bash it'll work better at the moment):
 ```bash
 sh start.sh
 ```
@@ -35,3 +36,5 @@ sh stop.sh
 
 ## Note
 Let's Encrypt is pre-configured to generate a self-signed SSL certificate. Feel free to edit the `docker-compose` of the `docker-network` folder to change this behaviour.
+
+This setup may be used in production (but it's not recommend) if you modify docker-compose files (especially in docker-network folder to disable the Traefik dashboard and tune some settings)

@@ -4,11 +4,11 @@ services:
 
   php-app:
     build: ./php
-    container_name: "php-app"
+    container_name: "app-php"
     networks:
       - dockymfik-network
     depends_on:
-      - db-app
+      - app-db
     volumes:
       - ./app:/var/www/app:cached
     labels:
@@ -19,11 +19,21 @@ services:
       - "traefik.http.routers.php-app.entrypoints=websecure"
       - "traefik.http.routers.php-app.tls=true"
       - "traefik.http.routers.php-app.tls.certresolver=leresolver"
+    environment:
+      APACHE_DOCUMENT_ROOT: "public/"
+      PHP_EXTENSION_XDEBUG: "1"
+      PHP_INI_MEMORY_LIMIT: "1G"
+      APP_ENV: "${APP_ENV}"
+      DATABASE_URL: "mysql://root:${MYSQL_ROOT_PASSWORD}@app-db:3306/db"
+
+      STARTUP_COMMAND_1: composer install
+      STARTUP_COMMAND_2: echo 'alias sf="php bin/console"' >> ~/.bashrc
+      # STARTUP_COMMAND_3: yqrn install & yarn build
     restart: unless-stopped
 
-  db-app:
+  app-db:
     image: mysql:5.7
-    container_name: "db-app"
+    container_name: "app-db"
     networks:
       - dockymfik-network
     env_file:
