@@ -41,5 +41,5 @@ services:
       - "./acme.json:/acme.json:cached"
 
 networks:
-  test-network:
+  dockymfik-network:
     external: true
