@@ -23,7 +23,7 @@ services:
       - --global.checkNewVersion=true
       - --global.sendAnonymousUsage=false
     labels:
-      - "traefik.http.routers.traefik.rule=Host(`docker.traefik.localhost`)"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.localhost`)"
       - "traefik.http.routers.traefik.service=api@internal"
       - "traefik.http.routers.traefik.tls.certresolver=leresolver"
       - "traefik.http.routers.traefik.entrypoints=websecure"

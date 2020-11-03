@@ -2,6 +2,7 @@
 .env.*
 !.env.dist
 
+!.keep
+
 docker-app/app/*
-!docker-app/app/.keep
-!docker-app/app/docker-compose.yml
+docker-app/data/db/*
