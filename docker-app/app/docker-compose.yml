@@ -1,0 +1,61 @@
+version: '3'
+
+services:
+
+  app-php:
+    image: thecodingmachine/php:7.4-v3-apache-node12
+    container_name: "${PROJECT_NAME}-app"
+    networks:
+      - dockymfik-network
+    env_file:
+      - ./../../.env
+    depends_on:
+      - app-db
+    volumes:
+      - ./:/var/www/html:cached
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=${PROJECT_NAME}-network"
+
+      - "traefik.http.routers.${PROJECT_NAME}-app.rule=Host(`${PROJECT_ROOT_DOMAIN}`)"
+      - "traefik.http.routers.${PROJECT_NAME}-app.entrypoints=websecure"
+      - "traefik.http.routers.${PROJECT_NAME}-app.tls=true"
+      - "traefik.http.routers.${PROJECT_NAME}-app.tls.certresolver=leresolver"
+    environment:
+      APACHE_DOCUMENT_ROOT: "public/"
+      PHP_EXTENSION_XDEBUG: "1"
+      PHP_EXTENSION_GD: "1"
+      PHP_INI_XDEBUG__REMOTE_ENABLE: 1
+      PHP_INI_XDEBUG__REMOTE_AUTOSTART: 1
+      PHP_IDE_CONFIG: "serverName=host.docker.internal"
+      XDEBUG_CONFIG: "remote_port=9000 remote_autostart=1"
+      PHP_INI_MEMORY_LIMIT: "1G"
+      APP_ENV: "${APP_ENV}"
+      DATABASE_URL: "${DB_TYPE}://${DB_USER}:${DB_PWD}@app-db:${DB_PORT}/${DB_NAME}"
+
+      STARTUP_COMMAND_1: composer install
+      STARTUP_COMMAND_2: echo 'alias sf="php bin/console"' >> ~/.bashrc
+      # STARTUP_COMMAND_3: yarn install & yarn build
+
+  app-db:
+    image: mysql:5.7
+    networks:
+      - dockymfik-network
+    env_file:
+      - ./../../.env
+    command: ["--default-authentication-plugin=mysql_native_password"]
+    volumes:
+      - ./../data/db:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: "${DB_NAME}"
+      MYSQL_USER: "${DB_USER}"
+      MYSQL_PASSWORD: "${DB_PWD}"
+      MYSQL_ROOT_PASSWORD: "${DB_ROOT_PWD}"
+    labels:
+      - "traefik.enable=true"
+
+networks:
+  dockymfik-network:
+      external: true
