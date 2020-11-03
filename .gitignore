@@ -5,5 +5,4 @@
 !.keep
 
 docker-app/app/*
-!docker-app/app/docker-compose.yml
-!docker-app/app/composer.json
+docker-app/data/db/*
