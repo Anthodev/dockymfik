@@ -6,5 +6,7 @@ if ! docker network ls | grep -q 'dockymfik-network'; then
     echo "Docker network created"
 fi
 
+chmod 600 ./docker-network/acme.json
+
 docker-compose -f ./docker-network/docker-compose.yml build
 docker-compose -f ./docker-app/app/docker-compose.yml build
